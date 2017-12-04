@@ -1,0 +1,111 @@
+- page_title @faq.title
+
+%h4
+  =# link_to @faq.category, "#"
+  = @faq.category
+  &rarr;
+
+#answer.row
+
+  .col-12.col-md-10.col-lg-8.col-xl-7
+    
+    %h1
+      = @faq.title
+      - if signed_in? and current_user.admin?
+        = link_to "[edit]", edit_faq_path(@faq), :class => "edit-link"
+      
+    %br/
+  
+    = mdown(@faq.body)
+    
+    - if @faq.image_references.any? || @faq.web_references.any? || @faq.youtube_references.any?
+      %br/
+
+        
+    - if @faq.image_references.any?
+      %h6 Image References
+      - for ref in @faq.image_references
+        - if ref.image?
+          = link_to ref.image.url do
+            = image_tag ref.image.big_thumb.url, :class => "img-thumbnail"
+      %br/
+      
+    - if @faq.web_references.any?
+      %h6 Web References
+      %ol
+        - for ref in @faq.web_references
+          - if ref.web_url
+            %li= link_to ref.web_url, ref.web_url
+        
+    - if @faq.youtube_references.any?
+      .card
+        .card-block
+          - for ref in @faq.youtube_references
+            %iframe{:width => 200, :height => 151, :src => ref.youtube_url, :allowfullscreen => true}
+      
+      
+    %br/
+    
+    - if @faq.image_references.any? || @faq.web_references.any? || @faq.youtube_references.any?
+      %br/
+      %hr/
+    
+    - comment_count = @faq.comments.count
+
+    #comment-strip.muted
+      - if comment_count > 0
+        = link_to "View #{pluralize(comment_count, 'comment')}", "#comments"
+      - else
+        No comments
+      &nbsp; | &nbsp;
+      = link_to "Add comment", "#comments"
+    
+    #comments.hidden-xs-up
+    
+      
+      - if comment_count == 0
+        %h6.thick Add comment
+      - else
+        %h6.thick= pluralize(comment_count, 'comment')
+        %hr/
+      
+      - @faq.comments.each_with_index do |d, i|
+        .what-dey-say
+          = simple_format d.body
+          
+        %small
+          = "–"
+          = d.name
+          - if d.hometown
+            %span.muted
+              from
+              = d.hometown
+  
+        - if i < comment_count - 1
+          %br/
+          %br/
+        
+      %hr/
+          
+      
+      = bootstrap_form_for @faq.comments.build, :url => faq_comments_path(@faq) do |f|
+        = f.text_area :body, :label => "Your comment"
+        = f.text_field :name, :label => "Your name"
+        = f.text_field :hometown, :label => "Where are you from?"
+        = f.submit "Add Comment", :class => 'btn btn-warning'
+        
+:javascript
+  showComments = function() {
+    if(window.location.hash == "#comments") {
+      document.getElementById("comments").classList.remove("hidden-xs-up");
+      document.getElementById("comment-strip").classList.add("hidden-xs-up");
+    }
+  }
+  if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+    showComments();
+  } else {
+    document.addEventListener('DOMContentLoaded', showComments);
+  }
+  window.onhashchange = showComments;
+  
+= ga

@@ -1,0 +1,16 @@
+
+%h5 Reset Your Password
+%h5.text-muted Enter your email address and we'll send you a link to reset your password.
+
+%br/
+  
+.row
+
+  .col-xs-12.col-sm-9.col-md-6.col-lg-5.col-xl-4
+
+    .card
+      .card-block
+
+        = bootstrap_form_for :password, url: passwords_path do |f|
+          = f.email_field :email
+          = f.submit

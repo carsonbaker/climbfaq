@@ -1,0 +1,21 @@
+
+%h1.display Let's get started.
+%h5.text-muted Begin by creating an account.
+%br/
+
+.row
+
+  .col-xs-12.col-sm-9.col-md-6.col-lg-5.col-xl-4
+
+    .card
+      .card-block
+        
+        = bootstrap_form_for @user, :class => 'form' do |f|
+          
+          = f.email_field :email
+          = f.password_field :password
+
+          = f.submit "Sign Up", :class => 'btn btn-outline-primary'
+
+  .col
+

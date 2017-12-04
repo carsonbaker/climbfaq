@@ -1,0 +1,15 @@
+.row
+  .col-12.col-md-10.col-lg-8.col-xl-7
+    #add-faq
+      %h5 Add a question/answer
+      %hr/
+
+      = bootstrap_form_for @faq do |f|
+        = f.text_field :title, :label => "Question", :placeholder => "How do I xyz?"
+
+        = f.select :category, Faq.categories, {}, {:style => "width: auto"}
+        
+        = f.text_area :body, :rows => 15, :label => "Answer", :placeholder => "..."
+        = f.submit :class => 'btn btn-primary'
+
+      %br/

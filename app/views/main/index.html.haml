@@ -1,0 +1,54 @@
+- page_title "The Climbing FAQ"
+
+.row
+  .col-12.col-md-10.col-lg-8.col-xl-7
+
+    - for c in Faq.categories
+    
+      - next unless Faq.where(:category => c, :hidden => false).any?
+
+      %h5.category
+        = c
+      %br/
+      %dl.listing
+        - faqs = Faq.where(:category => c).order(:position)
+        - faqs.each_with_index do |d, i|
+          
+          - if d.body.blank?
+            - if signed_in? and current_user.admin?
+              %dt
+                %span.text-muted
+                  = d.title
+                = link_to "[edit]", edit_faq_path(d), :class => "edit-link"
+                = button_to "[del]", faq_path(d), :method => :delete, :class => 'btn-link edit-link'
+                - if i > 0
+                  = button_to "↑", up_faq_path(d), :class => 'btn-link edit-link'
+                - if i < faqs.size - 1
+                  = button_to "↓", down_faq_path(d), :class => 'btn-link edit-link'
+          - else
+            %dt
+              = link_to d.title, d
+              - if signed_in? and current_user.admin?
+                = link_to "[edit]", edit_faq_path(d), :class => "edit-link"
+                - if i > 0
+                  = button_to "↑", up_faq_path(d), :class => 'btn-link edit-link'
+                - if i < faqs.size - 1
+                  = button_to "↓", down_faq_path(d), :class => 'btn-link edit-link'
+            
+        - if signed_in? and current_user.admin?  
+          %dt
+            %small
+              %b= link_to "Add…", new_faq_path(:category => c)
+          
+%hr/
+
+- if signed_in?
+  %small.text-muted.float-left
+    = current_user.email
+    | &nbsp;
+  %small.float-left
+    = button_to "Logout", sign_out_path, :method => :delete, :class => 'btn-link'
+- else
+  = link_to "Sign In", sign_in_path
+  
+= ga

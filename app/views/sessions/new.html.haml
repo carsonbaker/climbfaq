@@ -1,0 +1,24 @@
+%h1.display Sign In
+%br/
+
+.row
+
+  .col-xs-12.col-sm-9.col-md-6.col-lg-5.col-xl-4
+
+    .card
+      .card-block
+        
+        = bootstrap_form_for :session, url: session_path do |f|
+          = f.email_field :email
+          = f.password_field :password  
+          
+          = f.submit "Sign In"
+          
+          .other-links
+            %hr/
+            = link_to "Forgot password?", new_password_path
+
+%br/
+
+-# Need an account?
+=# link_to "Sign up.", sign_up_path

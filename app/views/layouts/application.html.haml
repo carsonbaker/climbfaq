@@ -1,0 +1,29 @@
+- if Rails.env.development?
+  - page_title "[Devel] The Climbing FAQ"
+- else
+  - page_title "The Climbing FAQ"
+
+- content_for :inner_layout do
+
+  %header.container
+    .float-left
+      .thick= link_to "The Climbing FAQ", root_path
+    .float-right
+    
+      - if signed_in?
+        %small.text-muted
+          = current_user.email
+          &nbsp;&nbsp;
+        %small.float-right
+          = button_to "Logout", sign_out_path, :method => :delete, :class => 'btn btn-outline-secondary btn-sm'
+      - else
+        = link_to "Sign In", sign_in_path
+        
+    .clearfix
+  -# %hr/
+
+  %main.container
+    %br/
+    = yield
+    
+= render :file => 'layouts/base'

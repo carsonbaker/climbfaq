@@ -1,0 +1,44 @@
+.row
+  .col-12.col-md-10.col-lg-8.col-xl-7
+    
+    %h5
+      %span.text-muted (Editing)
+      = link_to @faq.title, @faq
+    %br/
+  
+    = bootstrap_form_for @faq do |f|
+      = f.text_field :title, :label => "Question", :placeholder => "How do I xyz?"
+
+      = f.select :category, Faq.categories, {}, {:style => "width: auto"}
+      
+      = f.text_area :body, :rows => 15, :label => "Answer", :placeholder => "..."
+      
+      - if @faq.image_references.any?
+        %h5 Image References
+        - for ref in @faq.image_references
+          - if ref.image?
+            = image_tag ref.image.thumb.url, :class => "img-thumbnail"
+
+      - if @faq.web_references.any?
+        %h5 Web References
+        %ol
+          - for ref in @faq.web_references
+            - if ref.web_url
+              %li= link_to ref.web_url, ref.web_url
+          
+      - if @faq.youtube_references.any?
+        %h5 YouTube References
+        %ol
+          - for ref in @faq.youtube_references
+            %li= ref.youtube_url
+          
+      %br/
+      = f.fields_for_with_bootstrap @faq.references.build do |r|
+        Images
+        %br/
+        = r.file_field :image, multiple: true, accept: "image/jpeg, image/jpg, image/gif, image/png", :hide_label => true
+        = r.text_field :web_url
+        = r.text_field :youtube_url
+      %hr/
+      = f.submit "Edit", :class => 'btn btn-primary'
+      = f.submit "Delete", :class => 'btn btn-secondary muted'

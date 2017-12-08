@@ -1,7 +1,5 @@
 class CommentsController < ApplicationController
   
-  layout 'blank'
-
   def create
     @comment = Comment.new(comments_params)
     @comment.faq = Faq.friendly.find params[:faq_id]

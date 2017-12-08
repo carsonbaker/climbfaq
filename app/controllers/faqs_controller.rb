@@ -1,7 +1,5 @@
 class FaqsController < ApplicationController
   
-  layout 'blank'
-  
   before_action :require_login, :except => [:show]
   before_action :require_admin, :except => [:show]
   

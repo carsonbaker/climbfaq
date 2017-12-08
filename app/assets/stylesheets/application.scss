@@ -18,12 +18,28 @@
 @import "bootstrap";
 
 body {
-  padding: $spacer-y;
+  padding: 0 $spacer-y;
+  box-shadow: inset 0 4px 0 rgba(208,2,27,0.55);
 }
 
 @include media-breakpoint-down(sm) {
   body {
-    padding: .25rem;
+    padding: 0 .25rem;
+  }
+}
+
+header {
+  
+}
+
+#accent {
+  border-top: 4px solid #D0011B;
+  display: inline-block;
+  padding-top: 2em;
+  text-decoration: none;
+  border-bottom: 0;
+  &:hover {
+    border-top: 4px solid #e40013;
   }
 }
 

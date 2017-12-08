@@ -1,7 +1,5 @@
 class MainController < ApplicationController
   
-  layout "blank"
-  
   def index
     
   end
